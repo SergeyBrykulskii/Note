@@ -8,7 +8,7 @@ public class User : IEntityId<long>, IAuditable
 
     public long Login { get; set; }
     public long Password { get; set; }
-    public List<Report> Reports { get; set; }
+    public List<Report>? Reports { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
