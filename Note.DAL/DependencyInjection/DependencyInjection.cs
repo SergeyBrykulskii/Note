@@ -2,6 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Note.DAL.Interceptors;
+using Note.DAL.Repositories;
+using Note.Domain.Entity;
+using Note.Domain.Interfaces.Repositories;
 
 namespace Note.DAL.DependencyInjection;
 
@@ -16,10 +19,12 @@ public static class DependencyInjection
         {
             options.UseNpgsql(conectionString);
         });
+        services.InitRepositories();
     }
 
     public static void InitRepositories(this IServiceCollection services)
     {
-
+        services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
+        services.AddScoped<IBaseRepository<Report>, BaseRepository<Report>>();
     }
 }
