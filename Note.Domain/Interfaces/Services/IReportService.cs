@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Note.Domain.Dto;
+using Note.Domain.Result;
 
-namespace Note.Domain.Interfaces.Services
+namespace Note.Domain.Interfaces.Services;
+
+public interface IReportService
 {
-    internal interface IReportService
-    {
-    }
+    Task<CollectionResult<ReportDto>> GetReportsAsync(long userId);
 }

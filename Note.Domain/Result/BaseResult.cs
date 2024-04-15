@@ -5,7 +5,7 @@ public class BaseResult
     public bool IsSuccess => ErrorMessage == null;
 
     // почитать про init
-    protected string? ErrorMessage { get; init; }
+    public string? ErrorMessage { get; set; }
 
     public int? ErrorCode { get; set; }
 }
