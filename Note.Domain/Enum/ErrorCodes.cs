@@ -2,8 +2,11 @@
 
 public enum ErrorCodes
 {
-    ReportsNotFound = 0,
-    ReportNotFound = 1,
+    InternalServerError = 1,
 
-    InternalServerError = 10
+    ReportsNotFound = 10,
+    ReportNotFound = 11,
+    ReportAlreadyExists = 12,
+
+    UserNotFound = 21,
 }
