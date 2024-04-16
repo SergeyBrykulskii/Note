@@ -120,6 +120,9 @@
   <data name="InternalserverError" xml:space="preserve">
     <value>Внутреняя ошибка сервера</value>
   </data>
+  <data name="ReportNotFound" xml:space="preserve">
+    <value>Отчет не найден</value>
+  </data>
   <data name="ReportsNotFound" xml:space="preserve">
     <value>Отчеты не найдены</value>
   </data>

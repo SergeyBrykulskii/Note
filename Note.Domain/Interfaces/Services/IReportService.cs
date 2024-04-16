@@ -6,4 +6,6 @@ namespace Note.Domain.Interfaces.Services;
 public interface IReportService
 {
     Task<CollectionResult<ReportDto>> GetReportsAsync(long userId);
+
+    Task<BaseResult<ReportDto>> GetReportByIdAsync(long id);
 }
