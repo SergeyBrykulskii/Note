@@ -1,3 +1,4 @@
+using Note.Api;
 using Note.Application.DependencyInjection;
 using Note.DAL.DependencyInjection;
 using Serilog;
@@ -5,9 +6,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwagger();
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddControllers();
@@ -22,7 +21,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Note Swagger v1.0");
+        c.SwaggerEndpoint("/swagger/v2/swagger.json", "Note Swagger v2.0");
+        c.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseHttpsRedirection();
