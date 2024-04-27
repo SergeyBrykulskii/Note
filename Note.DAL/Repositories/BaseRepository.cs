@@ -11,24 +11,24 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _dbContext = dbContext;
     }
 
-    public Task<TEntity> CreateAsync(TEntity entity)
+    public async Task<TEntity> CreateAsync(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        _dbContext.Add(entity);
-        _dbContext.SaveChanges();
+        await _dbContext.AddAsync(entity);
+        await _dbContext.SaveChangesAsync();
 
-        return Task.FromResult(entity);
+        return entity;
     }
 
-    public Task<TEntity> RemoveAsync(TEntity entity)
+    public async Task<TEntity> RemoveAsync(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
         _dbContext.Remove(entity);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
 
-        return Task.FromResult(entity);
+        return entity;
     }
 
     public IQueryable<TEntity> GetAll()
@@ -36,13 +36,13 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return _dbContext.Set<TEntity>();
     }
 
-    public Task<TEntity> UpdateAsync(TEntity entity)
+    public async Task<TEntity> UpdateAsync(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
         _dbContext.Update(entity);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
 
-        return Task.FromResult(entity);
+        return entity;
     }
 }

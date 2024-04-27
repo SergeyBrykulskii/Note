@@ -115,9 +115,12 @@ public class ReportService : IReportService
 
         try
         {
-            report = await _reportRepository.GetAll()
+            report = /*await*/ _reportRepository.GetAll()
+                .AsEnumerable()
+                .Where(r => r.Id == id)
                 .Select(r => new ReportDto(r.Id, r.Name, r.Description, r.CreatedAt.ToLongDateString()))
-                .FirstOrDefaultAsync(r => r.Id == id);
+                //.FirstOrDefaultAsync(r => r.Id == id);
+                .FirstOrDefault(r => r.Id == id);
         }
         catch (Exception ex)
         {
@@ -200,6 +203,9 @@ public class ReportService : IReportService
                     ErrorCode = result.ErrorCode
                 };
             }
+
+            report!.Name = reportDto.Name;
+            report.Description = reportDto.Description;
 
             await _reportRepository.UpdateAsync(report!);
 

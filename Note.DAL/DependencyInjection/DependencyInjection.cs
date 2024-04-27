@@ -12,7 +12,7 @@ public static class DependencyInjection
 {
     public static void AddDataAccessLayer(this IServiceCollection services, IConfiguration configuration)
     {
-        var conectionString = configuration.GetConnectionString("PostreSql");
+        var conectionString = configuration.GetConnectionString("PostrgeSql");
 
         services.AddSingleton<DateInterceptor>();
         services.AddDbContext<ApplicationDbContext>(options =>
