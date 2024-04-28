@@ -63,7 +63,21 @@ public class ReportController : ControllerBase
 
         return BadRequest(response);
     }
-
+    /// <summary>
+    /// Создание отчета
+    /// </summary>
+    /// <param name="reportDto"></param>
+    /// <remarks>
+    /// Request for create report
+    ///     POST
+    ///     {
+    ///         "name": "Report #1",
+    ///         "description": "Test"
+    ///         "userId": 1 
+    ///     }
+    /// </remarks>
+    /// <response code="200">Отчет был создан</response>
+    /// <response code="200">Отчет не был создан</response>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

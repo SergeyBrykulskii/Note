@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace Note.Api;
 
@@ -56,6 +57,10 @@ public static class Startup
                     Array.Empty<string>()
                 }
             });
+
+            var commentFileXml = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, commentFileXml));
+
 
         });
     }
