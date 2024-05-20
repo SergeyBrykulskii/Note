@@ -10,5 +10,5 @@ public class User : IEntityId<long>
     public string Password { get; set; }
     public List<Report>? Reports { get; set; }
 
-
+    public UserToken UserToken { get; set; }
 }

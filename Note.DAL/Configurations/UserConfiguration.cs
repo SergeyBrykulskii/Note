@@ -16,5 +16,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne(r => r.User)
             .HasForeignKey(r => r.UserId)
             .HasPrincipalKey(u => u.Id);
+
+        builder.HasData(new List<User>()
+        {
+            new User()
+            {
+                Id = 1,
+                Login = "qwerty",
+                Password = "qwerty"
+            }
+        });
     }
 }
