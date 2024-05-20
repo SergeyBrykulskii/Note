@@ -120,6 +120,12 @@
   <data name="InternalserverError" xml:space="preserve">
     <value>Внутреняя ошибка сервера</value>
   </data>
+  <data name="InvalidRefreshToken" xml:space="preserve">
+    <value>Невалидный refreshToken</value>
+  </data>
+  <data name="InvalidToken" xml:space="preserve">
+    <value>Невалидный токен</value>
+  </data>
   <data name="PasswordNotEqual" xml:space="preserve">
     <value>Пароли не совпадают</value>
   </data>

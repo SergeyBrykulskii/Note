@@ -3,6 +3,7 @@
 public enum ErrorCodes
 {
     InternalServerError = 1,
+    InvalidRefreshToken = 2,
 
     ReportsNotFound = 10,
     ReportNotFound = 11,
@@ -13,5 +14,6 @@ public enum ErrorCodes
 
     PasswordNotEqual = 31,
     WrongPassword = 33,
+
 
 }

@@ -70,6 +70,24 @@ namespace Note.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Невалидный refreshToken.
+        /// </summary>
+        internal static string InvalidRefreshToken {
+            get {
+                return ResourceManager.GetString("InvalidRefreshToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Невалидный токен.
+        /// </summary>
+        internal static string InvalidToken {
+            get {
+                return ResourceManager.GetString("InvalidToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Пароли не совпадают.
         /// </summary>
         internal static string PasswordNotEqual {
