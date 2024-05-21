@@ -14,7 +14,7 @@ public class UserTokenConfiguration : IEntityTypeConfiguration<UserToken>
 
         builder.HasData(new List<UserToken>()
         {
-            new UserToken()
+            new()
             {
                 Id = 1,
                 RefreshToken = "qwertyqwerty",

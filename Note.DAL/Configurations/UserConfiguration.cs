@@ -19,7 +19,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasData(new List<User>()
         {
-            new User()
+            new()
             {
                 Id = 1,
                 Login = "qwerty",
