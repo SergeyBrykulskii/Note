@@ -1,4 +1,5 @@
 using Note.Api;
+using Note.Api.Middlewares;
 using Note.Application.DependencyInjection;
 using Note.DAL.DependencyInjection;
 using Note.Domain.Settings;
@@ -21,6 +22,8 @@ builder.Services.AddApplication();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

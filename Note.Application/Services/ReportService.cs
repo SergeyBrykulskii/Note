@@ -68,7 +68,7 @@ public class ReportService : IReportService
 
             return new BaseResult<ReportDto>()
             {
-                ErrorMessage = ErrorMessage.InternalserverError,
+                ErrorMessage = ErrorMessage.InternalServerError,
                 ErrorCode = (int)ErrorCodes.InternalServerError
             };
         }
@@ -103,7 +103,7 @@ public class ReportService : IReportService
 
             return new BaseResult<ReportDto>()
             {
-                ErrorMessage = ErrorMessage.InternalserverError,
+                ErrorMessage = ErrorMessage.InternalServerError,
                 ErrorCode = (int)ErrorCodes.InternalServerError
             };
         }
@@ -128,7 +128,7 @@ public class ReportService : IReportService
 
             return new BaseResult<ReportDto>()
             {
-                ErrorMessage = ErrorMessage.InternalserverError,
+                ErrorMessage = ErrorMessage.InternalServerError,
                 ErrorCode = (int)ErrorCodes.InternalServerError
             };
         }
@@ -166,7 +166,7 @@ public class ReportService : IReportService
 
             return new CollectionResult<ReportDto>()
             {
-                ErrorMessage = ErrorMessage.InternalserverError,
+                ErrorMessage = ErrorMessage.InternalServerError,
                 ErrorCode = (int)ErrorCodes.InternalServerError
             };
         }
@@ -220,7 +220,7 @@ public class ReportService : IReportService
 
             return new BaseResult<ReportDto>()
             {
-                ErrorMessage = ErrorMessage.InternalserverError,
+                ErrorMessage = ErrorMessage.InternalServerError,
                 ErrorCode = (int)ErrorCodes.InternalServerError
             };
         }

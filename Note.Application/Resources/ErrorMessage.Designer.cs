@@ -63,9 +63,9 @@ namespace Note.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Внутреняя ошибка сервера.
         /// </summary>
-        internal static string InternalserverError {
+        internal static string InternalServerError {
             get {
-                return ResourceManager.GetString("InternalserverError", resourceCulture);
+                return ResourceManager.GetString("InternalServerError", resourceCulture);
             }
         }
         

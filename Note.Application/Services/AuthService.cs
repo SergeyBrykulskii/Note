@@ -99,7 +99,7 @@ public class AuthService : IAuthService
 
             return new BaseResult<TokenDto>()
             {
-                ErrorMessage = ErrorMessage.InternalserverError,
+                ErrorMessage = ErrorMessage.InternalServerError,
                 ErrorCode = (int)ErrorCodes.InternalServerError
             };
         }
@@ -151,7 +151,7 @@ public class AuthService : IAuthService
 
             return new BaseResult<UserDto>()
             {
-                ErrorMessage = ErrorMessage.InternalserverError,
+                ErrorMessage = ErrorMessage.InternalServerError,
                 ErrorCode = (int)ErrorCodes.InternalServerError
             };
         }
