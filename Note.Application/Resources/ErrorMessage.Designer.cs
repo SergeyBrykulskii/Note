@@ -124,11 +124,38 @@ namespace Note.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Роль уже существует.
+        /// </summary>
+        internal static string RoleAlreadyExists {
+            get {
+                return ResourceManager.GetString("RoleAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Роль не найдена.
+        /// </summary>
+        internal static string RoleNotFound {
+            get {
+                return ResourceManager.GetString("RoleNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Пользователь уже существует.
         /// </summary>
         internal static string UserAlreadyExist {
             get {
                 return ResourceManager.GetString("UserAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователь уже имеет роль.
+        /// </summary>
+        internal static string UserAlreadyHasRole {
+            get {
+                return ResourceManager.GetString("UserAlreadyHasRole", resourceCulture);
             }
         }
         

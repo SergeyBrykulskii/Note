@@ -16,6 +16,7 @@ public static class DependencyInjection
     {
         services.AddAutoMapper(typeof(ReportMapping));
         services.AddAutoMapper(typeof(UserMapping));
+        services.AddAutoMapper(typeof(RoleMapping));
 
         InitServices(services);
     }
@@ -28,5 +29,6 @@ public static class DependencyInjection
         services.AddScoped<IReportService, ReportService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IRoleService, RoleService>();
     }
 }

@@ -17,6 +17,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey(r => r.UserId)
             .HasPrincipalKey(u => u.Id);
 
+        builder.HasMany(x => x.Roles)
+            .WithMany(x => x.Users)
+            .UsingEntity<UserRole>(
+                l => l.HasOne<Role>().WithMany().HasForeignKey(r => r.RoleId),
+                l => l.HasOne<User>().WithMany().HasForeignKey(r => r.UserId)
+            );
+
         builder.HasData(new List<User>()
         {
             new()

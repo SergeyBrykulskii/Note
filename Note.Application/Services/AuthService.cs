@@ -19,23 +19,30 @@ public class AuthService : IAuthService
 {
     private readonly IBaseRepository<User> _userRepository;
     private readonly IBaseRepository<UserToken> _userTokenRepository;
+    private readonly IBaseRepository<Role> _roleRepository;
+    private readonly IBaseRepository<UserRole> _userRoleRepository;
     private readonly ITokenService _tokenService;
     private readonly ILogger _logger;
     private readonly IMapper _mapper;
     public AuthService(IBaseRepository<User> userRepository, ILogger logger, IMapper mapper,
-        IBaseRepository<UserToken> userTokenRepository, ITokenService tokenService)
+        IBaseRepository<UserToken> userTokenRepository, ITokenService tokenService,
+        IBaseRepository<Role> roleRepository, IBaseRepository<UserRole> userRoleRepository)
     {
         _userRepository = userRepository;
         _logger = logger;
         _mapper = mapper;
         _userTokenRepository = userTokenRepository;
         _tokenService = tokenService;
+        _roleRepository = roleRepository;
+        _userRoleRepository = userRoleRepository;
     }
     public async Task<BaseResult<TokenDto>> Login(LoginUserDto loginUserDto)
     {
         try
         {
-            var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Login == loginUserDto.Login);
+            var user = await _userRepository.GetAll()
+                .Include(x => x.Roles)
+                .FirstOrDefaultAsync(u => u.Login == loginUserDto.Login);
 
             if (user == null)
             {
@@ -55,11 +62,8 @@ public class AuthService : IAuthService
                 };
             }
 
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Login),
-                new Claim(ClaimTypes.Role, "User")
-            };
+            var claims = user.Roles.Select(x => new Claim(ClaimTypes.Role, x.Name)).ToList();
+            claims.Add(new Claim(ClaimTypes.Name, user.Login));
 
             var userToken = await _userTokenRepository.GetAll().FirstOrDefaultAsync(x => x.UserId == user.Id);
             var refreshToken = _tokenService.GenerateRefreshToken();
@@ -139,6 +143,24 @@ public class AuthService : IAuthService
             };
 
             await _userRepository.CreateAsync(user);
+
+            var role = await _roleRepository.GetAll().FirstOrDefaultAsync(x => x.Name == "User");
+            if (role != null)
+            {
+                return new BaseResult<UserDto>
+                {
+                    ErrorMessage = ErrorMessage.RoleNotFound,
+                    ErrorCode = (int)ErrorCodes.RoleNotFound
+                };
+            }
+
+            var userRole = new UserRole()
+            {
+                UserId = user.Id,
+                RoleId = role.Id
+            };
+
+            await _userRoleRepository.CreateAsync(userRole);
 
             return new BaseResult<UserDto>()
             {
