@@ -7,6 +7,7 @@ using Note.Domain.Entity;
 using Note.Domain.Enum;
 using Note.Domain.Interfaces.Repositories;
 using Note.Domain.Interfaces.Services;
+using Note.Domain.Interfaces.UnitOfWork;
 using Note.Domain.Result;
 using Serilog;
 using System.Security.Claims;
@@ -17,16 +18,17 @@ namespace Note.Application.Services;
 
 public class AuthService : IAuthService
 {
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IBaseRepository<User> _userRepository;
     private readonly IBaseRepository<UserToken> _userTokenRepository;
     private readonly IBaseRepository<Role> _roleRepository;
-    private readonly IBaseRepository<UserRole> _userRoleRepository;
     private readonly ITokenService _tokenService;
     private readonly ILogger _logger;
     private readonly IMapper _mapper;
     public AuthService(IBaseRepository<User> userRepository, ILogger logger, IMapper mapper,
         IBaseRepository<UserToken> userTokenRepository, ITokenService tokenService,
-        IBaseRepository<Role> roleRepository, IBaseRepository<UserRole> userRoleRepository)
+        IBaseRepository<Role> roleRepository,
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _logger = logger;
@@ -34,7 +36,7 @@ public class AuthService : IAuthService
         _userTokenRepository = userTokenRepository;
         _tokenService = tokenService;
         _roleRepository = roleRepository;
-        _userRoleRepository = userRoleRepository;
+        _unitOfWork = unitOfWork;
     }
     public async Task<BaseResult<TokenDto>> Login(LoginUserDto loginUserDto)
     {
@@ -79,13 +81,15 @@ public class AuthService : IAuthService
                 };
 
                 await _userTokenRepository.CreateAsync(userToken);
+                await _userTokenRepository.SaveChangesAsync();
             }
             else
             {
                 userToken.RefreshToken = refreshToken;
                 userToken.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
 
-                await _userTokenRepository.UpdateAsync(userToken);
+                _userTokenRepository.Update(userToken);
+                await _userTokenRepository.SaveChangesAsync();
             }
 
             return new BaseResult<TokenDto>()
@@ -136,31 +140,43 @@ public class AuthService : IAuthService
 
             var hashUserPassword = HashPassword(registerUserDto.Password);
 
-            user = new User()
+            using (var transaction = await _unitOfWork.BeginTransactionAsync())
             {
-                Login = registerUserDto.Login,
-                Password = hashUserPassword,
-            };
-
-            await _userRepository.CreateAsync(user);
-
-            var role = await _roleRepository.GetAll().FirstOrDefaultAsync(x => x.Name == "User");
-            if (role != null)
-            {
-                return new BaseResult<UserDto>
+                try
                 {
-                    ErrorMessage = ErrorMessage.RoleNotFound,
-                    ErrorCode = (int)ErrorCodes.RoleNotFound
-                };
+                    user = new User()
+                    {
+                        Login = registerUserDto.Login,
+                        Password = hashUserPassword,
+                    };
+
+                    await _unitOfWork.UserRepository.CreateAsync(user);
+                    var role = await _roleRepository.GetAll().FirstOrDefaultAsync(x => x.Name == nameof(Roles.User));
+                    if (role != null)
+                    {
+                        return new BaseResult<UserDto>
+                        {
+                            ErrorMessage = ErrorMessage.RoleNotFound,
+                            ErrorCode = (int)ErrorCodes.RoleNotFound
+                        };
+                    }
+
+                    var userRole = new UserRole()
+                    {
+                        UserId = user.Id,
+                        RoleId = role.Id
+                    };
+
+                    await _unitOfWork.UserRoleRepository.CreateAsync(userRole);
+                    await _unitOfWork.SaveChangesAsync();
+
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                }
             }
-
-            var userRole = new UserRole()
-            {
-                UserId = user.Id,
-                RoleId = role.Id
-            };
-
-            await _userRoleRepository.CreateAsync(userRole);
 
             return new BaseResult<UserDto>()
             {

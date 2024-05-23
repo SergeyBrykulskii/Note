@@ -55,6 +55,7 @@ public class ReportService : IReportService
             };
 
             await _reportRepository.CreateAsync(report);
+            await _reportRepository.SaveChangesAsync();
 
             return new BaseResult<ReportDto>()
             {
@@ -90,7 +91,8 @@ public class ReportService : IReportService
                 };
             }
 
-            await _reportRepository.RemoveAsync(report);
+            _reportRepository.Remove(report);
+            await _reportRepository.SaveChangesAsync();
 
             return new BaseResult<ReportDto>()
             {
@@ -207,11 +209,12 @@ public class ReportService : IReportService
             report!.Name = reportDto.Name;
             report.Description = reportDto.Description;
 
-            await _reportRepository.UpdateAsync(report!);
+            var updatedReport = _reportRepository.Update(report!);
+            await _reportRepository.SaveChangesAsync();
 
             return new BaseResult<ReportDto>()
             {
-                Data = _mapper.Map<ReportDto>(report)
+                Data = _mapper.Map<ReportDto>(updatedReport)
             };
         }
         catch (Exception ex)

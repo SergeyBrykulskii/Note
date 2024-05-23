@@ -5,6 +5,7 @@ using Note.DAL.Interceptors;
 using Note.DAL.Repositories;
 using Note.Domain.Entity;
 using Note.Domain.Interfaces.Repositories;
+using Note.Domain.Interfaces.UnitOfWork;
 
 namespace Note.DAL.DependencyInjection;
 
@@ -29,5 +30,6 @@ public static class DependencyInjection
         services.AddScoped<IBaseRepository<UserToken>, BaseRepository<UserToken>>();
         services.AddScoped<IBaseRepository<Role>, BaseRepository<Role>>();
         services.AddScoped<IBaseRepository<UserRole>, BaseRepository<UserRole>>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

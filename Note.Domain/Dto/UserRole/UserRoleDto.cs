@@ -1,4 +1,4 @@
-﻿namespace Note.Domain.Dto.Role;
+﻿namespace Note.Domain.Dto.UserRole;
 
 public class UserRoleDto
 {

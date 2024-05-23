@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Note.Domain.Dto.Role;
+using Note.Domain.Dto.UserRole;
 using Note.Domain.Interfaces.Services;
 using Note.Domain.Result;
 using System.Net.Mime;
@@ -63,12 +64,42 @@ public class RoleController : ControllerBase
         return BadRequest(response);
     }
 
-    [HttpPost("addRole")]
+    [HttpPost("add-role-for-user")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BaseResult<UserRoleDto>>> AddRoleForUser([FromBody] UserRoleDto userRoleDto)
     {
         var response = await _roleService.AddRoleForUserAsync(userRoleDto);
+
+        if (response.IsSuccess)
+        {
+            return Ok(response);
+        }
+
+        return BadRequest(response);
+    }
+
+    [HttpDelete("delete-role-for-user")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<BaseResult<UserRoleDto>>> DeleteRoleForUser([FromBody] DeleteUserRoleDto userRoleDto)
+    {
+        var response = await _roleService.DeleteRoleForUserAsync(userRoleDto);
+
+        if (response.IsSuccess)
+        {
+            return Ok(response);
+        }
+
+        return BadRequest(response);
+    }
+
+    [HttpPut("update-role-for-user")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<BaseResult<UserRoleDto>>> UpdateRoleForUser([FromBody] UpdateUserRoleDto userRoleDto)
+    {
+        var response = await _roleService.UpdateRoleForUserAsync(userRoleDto);
 
         if (response.IsSuccess)
         {
