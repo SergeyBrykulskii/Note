@@ -1,5 +1,4 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Note.Domain.Dto.Report;
 using Note.Domain.Interfaces.Services;
@@ -7,7 +6,7 @@ using Note.Domain.Result;
 
 namespace Note.Api.Controllers;
 
-[Authorize]
+//[Authorize]
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]

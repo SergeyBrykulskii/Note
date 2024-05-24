@@ -270,7 +270,15 @@ public class RoleService : IRoleService
             {
                 await transaction.RollbackAsync();
             }
+
+            return new BaseResult<UserRoleDto>
+            {
+                Data = new UserRoleDto()
+                {
+                    Login = user.Login,
+                    RoleName = newRole.Name,
+                }
+            };
         }
-        throw new NotImplementedException();
     }
 }

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Note.Domain\Note.Domain.csproj" />
+    <ProjectReference Include="..\Note.Produser\Note.Producer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

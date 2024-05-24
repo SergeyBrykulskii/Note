@@ -1,14 +1,18 @@
 using Note.Api;
 using Note.Api.Middlewares;
 using Note.Application.DependencyInjection;
+using Note.Consumer.DependencyInjection;
 using Note.DAL.DependencyInjection;
 using Note.Domain.Settings;
+using Note.Producer.DependencyInjection;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.DefaultSection));
+builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection(nameof(RabbitMqSettings)));
+
 builder.Services.AddSwagger();
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
@@ -17,6 +21,8 @@ builder.Services.AddControllers();
 builder.Services.AddAuthenticationAndAuthorization(builder);
 builder.Services.AddDataAccessLayer(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddProducer();
+builder.Services.AddConsumer();
 
 
 var app = builder.Build();

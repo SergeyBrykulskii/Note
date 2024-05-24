@@ -21,7 +21,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Note.Application\Note.Application.csproj" />
+    <ProjectReference Include="..\Note.Consumer\Note.Consumer.csproj" />
     <ProjectReference Include="..\Note.DAL\Note.DAL.csproj" />
+    <ProjectReference Include="..\Note.Produser\Note.Producer.csproj" />
   </ItemGroup>
 
 </Project>

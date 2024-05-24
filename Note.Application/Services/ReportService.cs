@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Note.Application.Resources;
 using Note.Domain.Dto.Report;
 using Note.Domain.Entity;
@@ -8,6 +9,8 @@ using Note.Domain.Interfaces.Repositories;
 using Note.Domain.Interfaces.Services;
 using Note.Domain.Interfaces.Validations;
 using Note.Domain.Result;
+using Note.Domain.Settings;
+using Note.Producer.Interfaces;
 using Serilog;
 
 namespace Note.Application.Services;
@@ -18,16 +21,20 @@ public class ReportService : IReportService
     private readonly IBaseRepository<User> _userRepository;
     private readonly ILogger _logger;
     private readonly IReportValidator _reportValidator;
+    private readonly IMessageProducer _messageProducer;
+    private readonly IOptions<RabbitMqSettings> _rabbitMqSettings;
     private readonly IMapper _mapper;
 
     public ReportService(IBaseRepository<Report> reportRepository, ILogger logger, IBaseRepository<User> userRepository,
-        IReportValidator reportValidator, IMapper mapper)
+        IReportValidator reportValidator, IMapper mapper, IMessageProducer messageProducer, IOptions<RabbitMqSettings> rabbitMqsettings)
     {
         _reportRepository = reportRepository;
         _logger = logger;
         _userRepository = userRepository;
         _reportValidator = reportValidator;
         _mapper = mapper;
+        _messageProducer = messageProducer;
+        _rabbitMqSettings = rabbitMqsettings;
     }
 
     public async Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto reportDto)
@@ -54,6 +61,8 @@ public class ReportService : IReportService
 
         await _reportRepository.CreateAsync(report);
         await _reportRepository.SaveChangesAsync();
+
+        _messageProducer.SendMessage(report, _rabbitMqSettings.Value.RoutingKey, _rabbitMqSettings.Value.ExchangeName);
 
         return new BaseResult<ReportDto>()
         {
